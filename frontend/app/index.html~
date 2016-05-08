@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>My AngularJS App</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="styles/app.css">
+</head>
+<body>
+  <!--[if lt IE 7]>
+  <![endif]-->
+
+  <div ng-view ng-controller="MainCtrl">
+
+      <div class="page-header">
+        <div class="page-title">Home control</div>
+      </div>
+
+        <ul class="nav nav-tabs navbar-default">
+            <li role="presentation" ng-click="activeTab='room'" ng-class="{'active':activeTab==='room'}"><a  ui-sref="room">Room</a></li>
+            <li role="presentations" ng-click="activeTab='livingroom'" ng-class="{'active':activeTab==='livingroom'}"><a  ui-sref="livingRoom">Living Room</a></li>
+            <li role="presentation" ng-click="activeTab='bathroom'" ng-class="{'active':activeTab==='bathroom'}" ><a ui-sref="bathroom">Bathroom</a></li>
+            <li role="presentation" ng-click="activeTab='kitchen'" ng-class="{'active':activeTab==='kitchen'}"><a  ui-sref="kitchen">Kitchen</a></li>
+
+        </ul>
+        <div class="tab-content" ui-view></div>
+
+      </div>
+
+
+<!-- build:js js/homecontrol.min.js -->
+  <!--bower components-->
+  <script src="bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
+  <script src="bower_components/angular/angular.js"></script>
+  <script src="bower_components/angular-resource/angular-resource.js"></script>
+  <script src="bower_components/ui-router/release/angular-ui-router.js"></script>
+  <script src="bower_components/jquery/dist/jquery.js"></script>
+  <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+  <script src="bower_components/angular-less/angular-less.js"></script>
+  <script src="bower_components/angular-notify/dist/angular-notify.js"></script>
+  <script src="bower_components/angular-toggle-switch/angular-toggle-switch.js"></script>
+  <!--routes-->
+  <script src="app.js"></script>
+  <!-- controllers -->
+  <script src="main-ctrl.js"></script>
+  <script src="room/room-ctrl.js"></script>
+  <script src="bathroom/bathroom-ctrl.js"></script>
+  <script src="kitchen/kitchen-ctrl.js"></script>
+  <script src="living-room/living-room-ctrl.js"></script>
+  <!-- services -->
+  <script src="shared-services/music-control-service.js"></script>
+  <script src="shared-services/fm-control-service.js"></script>
+  <script src="shared-services/alarm-service.js"></script>
+<!-- endbuild -->
+
+</body>
+</html>

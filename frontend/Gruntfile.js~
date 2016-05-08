@@ -1,0 +1,255 @@
+module.exports = function(grunt) {
+
+  var serverBaseUrl = {serverBaseUrl:'http://localhost:8000'};
+  var staticFolder = 'app';
+
+
+  // Environment setup
+  if(grunt.option('mock')) {
+    serverBaseUrl = {serverBaseUrl:'http://localhost:8000'};
+	staticFolder = 'app';
+  }
+  if(grunt.option('testmin')){
+	serverBaseUrl = {serverBaseUrl:'http://localhost:8000'};
+	staticFolder = 'dist';
+  }
+  if(grunt.option('prod')){
+	serverBaseUrl = {serverBaseUrl:'http://homecontrol.local:8000'};
+	staticFolder = 'dist';
+  }
+
+  require('load-grunt-tasks')(grunt);
+  // Generate a constant module
+  grunt.loadNpmTasks('grunt-ng-constant');
+  grunt.loadNpmTasks('grunt-connect-prism');
+  grunt.loadNpmTasks('grunt-contrib-less');
+  grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-rev');
+  grunt.loadNpmTasks('grunt-usemin');
+  grunt.loadNpmTasks('grunt-angular-templates');
+
+  var appConfig = {
+	dist:'dist',
+    app: 'app',
+    mockRepo: 'mock',
+    constants:serverBaseUrl,
+    connectPort: grunt.option('port') || 9000,
+    connectTestPort: grunt.option('port') || 8001,
+    livereloadPort: grunt.option('livereload-port') || 35728,
+    hostname: grunt.option('host') || '0.0.0.0',
+    mock: grunt.option('mock') || false
+  };
+
+  // Project configuration.
+  grunt.initConfig({
+    settings: appConfig,
+	clean: ["dist", '.tmp'],
+	copy: {
+        index: {
+            expand: true,
+            cwd: 'app/',
+            src: ['index.html'],
+            dest: 'dist/'
+        },
+        images: {
+            expand: true,
+            cwd: 'app/',
+            src: ['images/**/*'],
+            dest: 'dist/'
+        },
+		style: {
+            expand: true,
+            cwd: 'app/',
+            src: ['**/*.css', '!bower_components/**'],
+            dest: 'dist/'
+        },
+		bootstrapFonts: {
+            expand: true,
+            cwd: 'app/',
+            src: ['bower_components/bootstrap/fonts/**'],
+            dest: 'dist/'
+        },
+		fontAwesome: {
+            expand: true,
+            cwd: 'app/',
+            src: ['bower_components/font-awesome/fonts/**'],
+            dest: 'dist/'
+        },
+		flags: {
+            expand: true,
+            cwd: 'app/',
+            src: ['bower_components/flag-icon-css/flags/**/fr.svg','bower_components/flag-icon-css/flags/**/gr.svg'],
+            dest: 'dist/'
+        }
+    },
+	rev: {
+            files: {
+                src: ['dist/**/*.{js,css}']
+            }
+    },
+	useminPrepare: {
+        html: 'app/index.html'
+    },
+ 
+    usemin: {
+        html: ['dist/index.html']
+    },
+    uglify: {
+        options: {
+            report: 'min',
+            mangle: false
+        }
+    },
+	ngtemplates:    {
+	  app:          {
+	    cwd:      'app/',
+		src:        ['**/*.html','!index.html','!bower_components/**'],
+		dest:       '.tmp/templates.js',
+		options:    {
+		  usemin: 'js/homecontrol.min.js',
+		  htmlmin: {
+			  collapseBooleanAttributes:      true,
+			  collapseWhitespace:             true,
+			  removeAttributeQuotes:          true,
+			  removeComments:                 true, // Only if you don't use comment directives!
+			  removeEmptyAttributes:          true,
+			  removeRedundantAttributes:      true,
+			  removeScriptTypeAttributes:     true,
+			  removeStyleLinkTypeAttributes:  true
+			}
+		}
+	  }
+	},
+    watch: {
+      i18n: {
+        files: ['<%= settings.app %>/i18n/*.json'],
+        options: {
+          livereload: '<%= connect.options.livereload %>'
+        }
+      },
+      styles: {
+        files: ['styles/**/*.{css,less}','app/**/*.{css,less}', '!app/styles/app.css'],
+        tasks: ['less']
+      },
+      gruntfile: {
+        files: ['Gruntfile.js']
+      },
+      livereload: {
+        options: {
+          livereload: '<%= connect.options.livereload %>'
+        },
+        files: [
+          '<%= settings.app %>/**/*.html',
+          '<%= settings.app %>/styles/**/*.css',
+          '<%= settings.app %>/**/*.js'
+        ]
+      }
+    },
+
+    connect: {
+      options: {
+        port: appConfig.connectPort,
+        hostname: appConfig.hostname,
+        livereload: appConfig.livereloadPort
+      },
+      livereload: {
+        options: {
+          open: true,
+          middleware: function (connect) {
+            return [
+              require('grunt-connect-prism/middleware'),
+              connect.static('styles'),
+              connect.static(staticFolder)
+            ];
+          }
+        }
+    }},
+    ngconstant: {
+      options: {
+        name: 'app.config',
+        dest: '<%= settings.app %>/generated-config.js',
+        constants: appConfig.constants,
+      },
+      all: {
+      }
+    },
+    less: {
+      production: {
+        options: {
+          plugins: [
+            new (require('less-plugin-autoprefix'))({browsers: ["last 2 versions"]})
+          ]
+        },
+        files: {
+          "app/styles/app.css": "app/styles/app.less"
+        }
+      }
+    },
+     prism: {
+      options: {
+        mode: 'mock',
+        host: 'localhost',
+        port: 8091,
+        delay: 'fast',
+        mocksPath: 'mocks',
+        context: '/api',
+        mockFilenameGenerator: function(config, req) {
+
+          // Filename are generated from URL like
+          // GET api/events/            -> events/GET.json
+          // GET api/events/?sign=1234  -> events/GET_sign-1234.json
+          // POST api/events/1          -> events/1/POST.json
+
+          // Url without query strings
+          var aUrlSplit = req.url.split('?');
+          var aUrl = aUrlSplit[0].substring(5); // Remove api/
+
+          // Are there query strings?
+          var aQueryStrings = '';
+          if( aUrlSplit.length === 2 ) {
+            aQueryStrings = '_' + aUrlSplit[1];
+
+            // Convert = into -
+            aQueryStrings = aQueryStrings.replace('=','-');
+
+            // Convert & into .
+            aQueryStrings = aQueryStrings.replace('&','.');
+          }
+
+          var aFilename = aUrl + '/' + req.method + aQueryStrings +'.json';
+
+          return aFilename;
+        },
+        useApi: false
+      }
+    }
+
+  });
+
+
+  grunt.registerTask('serve', 'Compile then start a connect web server', function (target) {
+    // Prism actived ?
+    var prismTask = 'prism:serve';
+    if (appConfig.mock) {
+      prismTask = prismTask + ':mock'; // mock mode activated
+    }
+    else {
+      prismTask = prismTask + ':proxy'; // proxy, no mock
+    }
+
+    grunt.task.run([
+      'build',
+      prismTask,
+      'connect:livereload',
+      'watch']);
+  });
+
+  grunt.registerTask('build', [
+	'clean','ngconstant:all', 'less', 'copy', 'useminPrepare','ngtemplates', 'concat', 'uglify', 'rev', 'usemin'
+    ]);
+
+
+}

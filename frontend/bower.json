@@ -1,0 +1,31 @@
+{
+  "name": "eatit",
+  "version": "0.0.0",
+  "dependencies": {
+    "jquery": "latest",
+	"angular": "latest",
+	"angular-ui-router": "latest",
+    "bootstrap": "latest",
+	"angular-bootstrap": "latest",
+	"angular-bootstrap-switch": "latest",
+    "angular-resource": "latest",
+	"angular-notify": "latest",
+	"angular-xeditable": "latest",
+	"angular-route":"latest",
+    "font-awesome": "~4.2.0",
+    "flag-icon-css":"latest",
+    "angular-toggle-switch":"latest",
+    "angular-ui-router-tabs":"latest",
+    "bootstrap-switch":"latest",
+    "html5-boilerplate":"latest",
+    "ui-router": "latest"
+  },
+  "devDependencies": {
+    "angular-mocks": "latest",
+    "angular-scenario": "latest",
+    "jasmine-jquery": "latest"
+  },
+  "resolutions": {
+    "angular": "latest"
+  }
+}

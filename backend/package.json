@@ -1,0 +1,24 @@
+{
+  "name": "rcswitch-rest",
+  "description": "RESTful API for rcswitch",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "express": "3.x",
+    "exec": "0.0.5",
+    "sleep": "1.1.0"
+  },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "readmeFilename": "README.md",
+  "gitHead": "a0c84a6d59889c413d39f34c685f27488c5e6a69",
+  "main": "server.js",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/denschu/rcswitch-rest"
+  },
+  "author": "",
+  "license": "BSD"
+}

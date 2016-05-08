@@ -1,0 +1,35 @@
+'use strict';
+
+angular.module('myApp').factory('FMService',['$http','notify', function($http,notify) {
+  return {
+
+  turnOn : function(plug){
+    $http.put('http://homecontrol:8000/switches/'+plug, {"status": "1"}).
+      success(function(data, status, headers, config) {
+            notify.closeAll();
+            notify('On');
+      }).
+      error(function(data, status, headers, config) {
+        notify.closeAll();
+         notify('Error');
+      })
+      },
+  turnOff : function(plug){
+    $http.put('http://homecontrol:8000/switches/'+plug, {"status": "0"}).
+      success(function(data, status, headers, config) {
+        notify.closeAll();
+         notify('Off');
+        //TODO
+      }).
+      error(function(data, status, headers, config) {
+      notify.closeAll();
+       notify('Error');
+        //TODO
+      })
+      }
+
+
+    }
+
+
+}]);

@@ -1,0 +1,36 @@
+'use strict';
+
+// Declare app level module which depends on views, and components
+var myApp = angular.module('myApp', [
+  'ui.router','ngResource','cgNotify','toggle-switch'
+]);
+
+myApp.config(function($stateProvider, $urlRouterProvider) {
+  //
+  // For any unmatched url, redirect to /state1
+  $urlRouterProvider.otherwise("/room");
+  //
+  // Now set up the states
+  $stateProvider
+    .state('room', {
+      url: "/room",
+      templateUrl: "room/room.html",
+      controller: "RoomCtrl"
+    })
+    .state('bathroom', {
+      url: "/bathroom",
+      templateUrl: "bathroom/bathroom.html",
+      controller: "BathroomCtrl"
+    })
+    .state('kitchen', {
+      url: "/kitchen",
+      templateUrl: "kitchen/kitchen.html",
+      controller: "KitchenCtrl"
+    })
+    .state('livingRoom', {
+      url: "/livingRoom",
+      templateUrl: "living-room/living-room.html",
+      controller: "LivingRoomCtrl"
+    })
+    ;
+});

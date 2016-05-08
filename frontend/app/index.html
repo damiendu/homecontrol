@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>My AngularJS App</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="styles/app.css">
+</head>
+<body>
+  <!--[if lt IE 7]>
+  <![endif]-->
+  <div ui-view></div>
+
+
+<!-- build:js js/homecontrol.min.js -->
+  <!--bower components-->
+  <script src="bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
+  <script src="bower_components/angular/angular.js"></script>
+  <script src="generated-config.js"></script>
+  <script src="bower_components/angular-resource/angular-resource.js"></script>
+  <script src="bower_components/ui-router/release/angular-ui-router.js"></script>
+  <script src="bower_components/jquery/dist/jquery.js"></script>
+  <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+  <script src="bower_components/angular-less/angular-less.js"></script>
+  <script src="bower_components/angular-notify/dist/angular-notify.js"></script>
+  <script src="bower_components/angular-toggle-switch/angular-toggle-switch.js"></script>
+  <!--routes-->
+  <script src="app.js"></script>
+  <!-- controllers -->
+  <script src="generic-room/generic-room-ctrl.js"></script>
+  <script src="layout/layout-ctrl.js"></script>
+  <!-- services -->
+  <script src="shared-services/music-control-service.js"></script>
+  <script src="shared-services/fm-control-service.js"></script>
+  <script src="shared-services/alarm-service.js"></script>
+  <script src="shared-services/home-definition-service.js"></script>
+<!-- endbuild -->
+
+</body>
+</html>

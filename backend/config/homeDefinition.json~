@@ -1,0 +1,89 @@
+{
+        "musicSources":[
+          {
+            "label":"homecontrol",
+            "pathFromServer":"/media/",
+            "pathFromMusicPlayer":"smb://homecontrol/media/"
+          }
+        ],
+        "rooms" : [
+            {
+                "label" : "Room",
+                "music" :
+                    {
+                        "host": "room.local",
+                        "plug" :
+                            {
+                                "FMCode" : "10000",
+                                "plugNumber" : "1"
+                            }
+                        ,
+                        "alarm" : true
+                    },
+                "plugs" :
+                        [
+                        {
+                            "label": "Fan",
+                            "FMCode": "10000",
+                            "plugNumber" : "4"
+                        }
+                          ]
+            },
+            {
+                "label" : "Bathroom",
+                "music" :
+                    {
+                        "host": "bathroom.local",
+                        "plug" :
+                            {
+                                "FMCode" : "10000",
+                                "plugNumber" : "2"
+                            },
+                        "alarm" : true
+                    }
+            },
+            {
+                "label" : "Living room",
+                "music" :
+                    {
+                        "host": "livingroom.local",
+                        "plug" : {
+                          "FMCode": "00011",
+                          "plugNumber": "4"
+                        },
+                        "alarm" : true
+                    },
+                "plugs" :
+                    [
+                        {
+                            "label": "Main lamp",
+                            "FMCode": "00011",
+                            "plugNumber" : "3"
+                        },
+                        {
+                            "label": "Small lamp",
+                            "FMCode": "00011",
+                            "plugNumber" : "2"
+                        },
+                        {
+                            "label": "Halogene",
+                            "FMCode": "00011",
+                            "plugNumber" : "1"
+                        }
+                    ]
+            },
+            {
+                "label" : "Kitchen",
+                "music" :
+                    {
+                        "host": "kitchen.local",
+                        "plug" :
+                            {
+                                "FMCode" : "10000",
+                                "plugNumber" : "3"
+                            },
+                        "alarm" : true
+                    }
+            }
+        ]
+    }

@@ -1,0 +1,113 @@
+<div>
+    <div ng-if="activeRoom.music && activeRoom.music.host" class="roomSection">
+        <div class="section-banner">
+            <div class="section-title">Music
+            </div>
+        </div>
+        <div ng-if="activeRoom.music.plug">
+            <div class="btn btn-xs btn-success " ng-click="turnOnMusic()"><span class="glyphicon glyphicon-off"></span> Turn on</div>
+            <div class="btn btn-xs btn-danger " ng-click="turnOffMusic()"><span class="glyphicon glyphicon-off"></span> Turn off</div>
+        </div>
+        <br/><br/>
+        <div class = "form-inline">
+                <select class="form-control" id="form-small" ng-model="selectedPlaylist">
+                    <option  ng-repeat="playlist in globalPlaylists" value="{{playlist.file}}">{{playlist.label}}</option>
+                    <option  ng-repeat="playlist in playlists" value="{{playlist.file}}">{{playlist.label}}</option>
+                </select>
+                <div class="btn btn-primary btn-xs" ng-click="playPlaylist()"><span class="glyphicon glyphicon-play"></span></div>
+        </div><br/>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <div class="btn btn-primary btn-xs">
+                <span class="glyphicon glyphicon-minus" ng-click="volumeDown()"></span>&nbsp;&nbsp;
+                <span class="glyphicon glyphicon-volume-up"></span>&nbsp;&nbsp;
+                <span class="glyphicon glyphicon-plus" ng-click="volumeUp()"></span>
+
+            </div>
+        </div><br/>
+	<div>Sleep : 
+		 <input id="form-xs" type="number" class="input-sm form-control" class="input" ng-model="sleepMinutes"/>
+		 <div class="btn btn-xs btn-primary" ng-click="setSleepMusic()">Set</div>
+	</div><br/>
+        <div>
+            <div class="btn btn-primary btn-xs" ng-click="previousSong()"><span class="glyphicon glyphicon-step-backward"></span></div>
+            <div class="btn btn-primary btn-xs" ng-click="pauseSong()"><span class="glyphicon glyphicon-pause"></span></div>
+            <div class="btn btn-primary btn-xs" ng-click="playSong()"><span class="glyphicon glyphicon-play"></span></div>
+            <div class="btn btn-primary btn-xs" ng-click="stopSong()"><span class="glyphicon glyphicon-stop"></span></div>
+            <div class="btn btn-primary btn-xs" ng-click="nextSong()"><span class="glyphicon glyphicon-step-forward"></span></div>
+        </div>
+        <p ng-if="playingMusic">
+            {{playingMusic.artist}} <br/> {{playingMusic.title}}
+        </p>
+    </div>
+
+    <div class="roomSection" ng-if="activeRoom.music.alarm">
+        <div class="section-banner">
+            <div class="section-title">Alarms
+            </div>
+        </div>
+        <div class="form-inline alarm-box" ng-repeat="alarm in alarms">
+            <div class="btn btn-xs btn-danger btn-close float-right" ng-click="removeAlarm(alarm)"><span
+                    class="glyphicon glyphicon-remove"></span></div>
+            <div class="box-wrapper">
+                <input id="form-small" class="form-control input-sm" type="text" ng-model="alarm.name">
+
+                <div class="btn btn-xs form-control ">
+                    <toggle-switch ng-model="alarm.on">
+                        </toggle-switch>
+                </div>
+
+
+                <br/>
+                <input id="form-xs" type="number" class="input-sm form-control" class="input" ng-model="alarm.hour"/>:<input id="form-xs" type="number" class="input-sm form-control" class="input" ng-model="alarm.min"/>
+                <div class="btn-xs btn" ng-click="alarm.frequency.monday=!alarm.frequency.monday"
+                     ng-class="{'btn-default':!alarm.frequency.monday,'btn-primary':alarm.frequency.monday}">mo
+                </div>
+                <div class="btn-xs btn" ng-click="alarm.frequency.tuesday=!alarm.frequency.tuesday"
+                     ng-class="{'btn-default':!alarm.frequency.tuesday,'btn-primary':alarm.frequency.tuesday}">tu
+                </div>
+                <div class="btn-xs btn" ng-click="alarm.frequency.wednesday=!alarm.frequency.wednesday"
+                     ng-class="{'btn-default':!alarm.frequency.wednesday,'btn-primary':alarm.frequency.wednesday}">we
+                </div>
+                <div class="btn-xs btn" ng-click="alarm.frequency.thursday=!alarm.frequency.thursday"
+                     ng-class="{'btn-default':!alarm.frequency.thursday,'btn-primary':alarm.frequency.thursday}">th
+                </div>
+                <div class="btn-xs btn" ng-click="alarm.frequency.friday=!alarm.frequency.friday"
+                     ng-class="{'btn-default':!alarm.frequency.friday,'btn-primary':alarm.frequency.friday}">fr
+                </div>
+                <div class="btn-xs btn" ng-click="alarm.frequency.saturday=!alarm.frequency.saturday"
+                     ng-class="{'btn-default':!alarm.frequency.saturday,'btn-primary':alarm.frequency.saturday}">sa
+                </div>
+                <div class="btn-xs btn" ng-click="alarm.frequency.sunday=!alarm.frequency.sunday"
+                     ng-class="{'btn-default':!alarm.frequency.sunday,'btn-primary':alarm.frequency.sunday}">su
+                </div>
+                <br/>
+                <div>Stop after (min):
+                     <input id="form-xs" type="number" class="input-sm form-control" class="input" ng-model="alarm.lastTime"/>
+                    Playlist :
+                    <select class="form-control" id="form-small" ng-model="alarm.playlist">
+                        <option  ng-repeat="playlist in globalPlaylists" value="{{playlist.file}}">{{playlist.label}}</option>
+                        <option  ng-repeat="playlist in playlists" value="{{playlist.file}}">{{playlist.label}}</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="float-left btn-sm btn btn-default" ng-click="saveAlarms()"><span
+                class="glyphicon glyphicon-floppy-disk"></span> Save and apply
+        </div>
+        <div class=" float-right btn btn-sm btn-primary" ng-click="addAlarm()"><span
+                class="glyphicon glyphicon-plus"></span> Add alarm
+        </div>
+    </div>
+
+    <div class="roomSection" ng-if="activeRoom.plugs && activeRoom.plugs.length>0">
+        <div class="section-banner"><div class="section-title">Plug
+        </div> </div>
+        <table class="table-condensed">
+            <tr ng-repeat="plug in activeRoom.plugs">
+                <td><b>{{plug.label}} : </b></td>
+                <td><div ng-click="turnPlugOn(plug)" class="btn btn-xs btn-success "><span class="glyphicon glyphicon-off"></span> On</div></td>
+                <td><div  ng-click="turnPlugOff(plug)" class="btn btn-xs btn-danger "><span class="glyphicon glyphicon-off"></span> Off</div></td>
+            </tr>
+        </table>
+    </div>
+</div>
